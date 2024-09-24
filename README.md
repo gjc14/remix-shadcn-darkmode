@@ -14,9 +14,9 @@ Read client hint cookie from `loader` and directly add theme to `<html>` in `/ap
 
 \*Fallbakc theme is set in [`useCookieTheme()`](https://github.com/gjc14/remix-shadcn-darkmode/tree/main/app/lib/client-hints/useCookieTheme.tsx)
 
-### 3. Set cookie
+### 3. Set theme and cookie
 
-Set `custom-theme` cookie when user manually choose either _dark_ or _light_, delete when _system_ is chosen.
+Set theme responsively by changing theme context (Using React Context, instruction: [Shadcn Dark mode(vite)](https://ui.shadcn.com/docs/dark-mode/vite)). Then set `custom-theme` cookie when user manually choose either _dark_ or _light_, delete when _system_ is chosen. Finally `revalidate()` to get new cookie set.
 
 ---
 

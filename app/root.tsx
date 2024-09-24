@@ -11,6 +11,7 @@ import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import "./tailwind.css";
 import { ClientHintCheck, getHints } from "./lib/client-hints/client-hints";
 import { useCookieTheme } from "./lib/client-hints/useCookieTheme";
+import { ThemeProvider } from "./components/theme-provider";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -47,7 +48,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ClientHintCheck />
       </head>
       <body>
-        {children}
+        {/* children will be the root Component, ErrorBoundary, or HydrateFallback */}
+        <ThemeProvider cookieTheme={theme}>{children}</ThemeProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
