@@ -1,3 +1,5 @@
+import { parse } from "cookie";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
   json,
   Links,
@@ -5,13 +7,20 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRevalidator,
 } from "@remix-run/react";
-import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { useEffect } from "react";
 
 import "./tailwind.css";
+
+import { ThemeProvider, useTheme } from "./components/theme-provider";
 import { ClientHintCheck, getHints } from "./lib/client-hints/client-hints";
-import { useCookieTheme } from "./lib/client-hints/useCookieTheme";
-import { ThemeProvider } from "./components/theme-provider";
+import { subscribeToSchemeChange } from "./lib/client-hints/color-schema";
+import {
+  customThemeCookieName,
+  getCustomTheme,
+  useCookieTheme,
+} from "./lib/client-hints/useCookieTheme";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -30,7 +39,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({
     requestInfo: {
       hints: getHints(request),
-      customTheme: undefined,
+      customTheme: getCustomTheme(request),
     },
   });
 };
@@ -58,5 +67,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const { revalidate } = useRevalidator();
+  const { setTheme } = useTheme();
+
+  // Subscribe to (prefers-color-scheme: dark), set cookie and revalidate when it changes
+  useEffect(() => {
+    subscribeToSchemeChange((theme) => {
+      // Returns "dark" or "light" from the media query (system theme)
+      const cookieHeader = document.cookie;
+      const parsedCustomTheme =
+        cookieHeader && parse(cookieHeader)[customThemeCookieName];
+
+      // Do not set theme if custom theme is set
+      if (parsedCustomTheme) return revalidate();
+
+      // Set theme to system theme and revalidate in setTheme()
+      setTheme(theme);
+    });
+  }, []);
+
   return <Outlet />;
 }

@@ -1,3 +1,4 @@
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import type { MetaFunction } from "@remix-run/node";
 import { ModeToggle } from "~/components/mode-toggle";
 
@@ -60,10 +61,16 @@ export default function Index() {
               <pre className="inline bg-accent-foreground/30">setTheme</pre>.
             </li>
           </ol>
-          <ul className="list-disc text-sm">
-            <li>code copied from @epic-web/client-hints</li>
-          </ul>
           <ModeToggle />
+          <a
+            href="https://github.com/gjc14/remix-shadcn-darkmode"
+            aria-label="Go to remix-shadcn-darkmode repo"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Go to the GitHub repository for remix-shadcn-darkmode"
+          >
+            <GitHubLogoIcon className="w-5 h-5" />
+          </a>
         </nav>
       </div>
     </div>
