@@ -12,6 +12,8 @@ Using `@epic-web/client-hints` (I copied only `color-schema` part of this packag
 
 Read client hint cookie from `loader` and directly add theme to `<html>` in `/app/root.tsx/Layout` component, if there are no `custom-theme` cookie set.
 
+\*Fallbakc theme is set in [`useCookieTheme()`](https://github.com/gjc14/remix-shadcn-darkmode/tree/main/app/lib/client-hints/useCookieTheme.tsx)
+
 ### 3. Set cookie
 
 Set `custom-theme` cookie when user manually choose either _dark_ or _light_, delete when _system_ is chosen.

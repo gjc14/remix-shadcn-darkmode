@@ -1,13 +1,16 @@
 import {
+  json,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 
 import "./tailwind.css";
+import { ClientHintCheck, getHints } from "./lib/client-hints/client-hints";
+import { useCookieTheme } from "./lib/client-hints/useCookieTheme";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -22,14 +25,26 @@ export const links: LinksFunction = () => [
   },
 ];
 
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  return json({
+    requestInfo: {
+      hints: getHints(request),
+      customTheme: undefined,
+    },
+  });
+};
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const theme = useCookieTheme(); // Return system or custom theme
+
   return (
-    <html lang="en">
+    <html lang="en" className={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <ClientHintCheck />
       </head>
       <body>
         {children}
