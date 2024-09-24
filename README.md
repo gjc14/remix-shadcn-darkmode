@@ -1,3 +1,23 @@
+# Remix Shadcn Darkmode
+
+Welcome! This is a demo of how to control _dark_, _light_, and _system_ themes in Remix SSR without flash. Taking advantage of [client-hints](https://github.com/epicweb-dev/client-hints) and learnt a lot from [2024 Remix dark mode](https://www.mattstobbs.com/remix-dark-mode/).
+
+## Flow
+
+### 1. Get client hint
+
+Using `@epic-web/client-hints` (I copied only `color-schema` part of this package) to get `prefers-color-scheme` before sending the first response. (Which will be stored in the cookie with request)
+
+### 2. Add theme
+
+Read client hint cookie from `loader` and directly add theme to `<html>` in `/app/root.tsx/Layout` component, if there are no `custom-theme` cookie set.
+
+### 3. Set cookie
+
+Set `custom-theme` cookie when user manually choose either _dark_ or _light_, delete when _system_ is chosen.
+
+---
+
 # Welcome to Remix!
 
 - 📖 [Remix docs](https://remix.run/docs)
